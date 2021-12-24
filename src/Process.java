@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class Process {
     public String name;
     public String color;
@@ -6,11 +8,19 @@ public class Process {
     public int updatedBurstTime;
     public int priorityNumber;
     public int quantumTime;
+
+    //n
+    public int roundedQuantum;
     public int waitingTime;
     public int turnAroundTime;
+
     //ceil Arrival time/v1
     public int ceilV1;
     public int factor;
+
+    //n
+    public ArrayList<Integer> historyQt;
+    public ArrayList<Integer> historyFactor;
 
     public Process() {
 
@@ -23,6 +33,7 @@ public class Process {
         this.burstTime = burstTime;
         this.priorityNumber = priorityNumber;
         this.quantumTime = quantumTime;
+        updatedBurstTime=burstTime;
     }
 
 //    public void setName(String name) {

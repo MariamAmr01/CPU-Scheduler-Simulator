@@ -5,11 +5,13 @@ public class Agat {
     private ArrayList<Process> readyQueue= new ArrayList<>();
     private ArrayList<Process> deadList= new ArrayList<>();
     private float v2;
+    private int time;
 
 
     public Agat(ArrayList<Process> processes)
     {
         this.processes=processes;
+        time=0;
     }
 
     public void setProcesses(ArrayList<Process> processes) {
@@ -32,8 +34,11 @@ public class Agat {
         return readyQueue;
     }
 
-    public ArrayList<Process> getDeadList() {
-        return deadList;
+    public void getDeadList() {
+        for (Process p : deadList) {
+
+            System.out.println(p.arrivalTime);
+        }
     }
 
     public void calculateV1()
@@ -73,5 +78,83 @@ public class Agat {
 
             p.factor = (10 - p.priorityNumber) + p.ceilV1 + (int) Math.ceil(p.updatedBurstTime / v2);
         }
+    }
+    public void checkTime()
+    {
+        for (Process p : processes) {
+
+            if(p.arrivalTime==time)
+            {
+                readyQueue.add(p);
+            }
+        }
+    }
+
+    public Process calcMinFactor()
+    {
+        Process p=null;
+        int minFactor=0;
+        for (int i = 0; i < readyQueue.size()-1; i++) {
+
+            minFactor=Math.min(readyQueue.get(i).factor,readyQueue.get(i+1).factor);
+        }
+
+        for (Process p2 : readyQueue) {
+
+            if(p2.factor==minFactor)
+                p= p2;
+        }
+        return p;
+    }
+
+    public void scheduleAgat()
+    {
+        checkTime();
+        while (deadList.size()!=processes.size()) {
+            int q;
+            Process currProcess=readyQueue.get(0);
+            System.out.println(currProcess.arrivalTime);
+            q=(Math.round((float)(40*currProcess.quantumTime)/100));
+            int remQuantum= currProcess.quantumTime;
+            calculateFactor();
+            for (int i = 0; i < currProcess.quantumTime; i++) {
+
+               if(currProcess.updatedBurstTime!=0) {
+                   time++;
+                   remQuantum--;
+                   checkTime();
+                   if (i == q) {
+                       //System.out.println(calcMinFactor().arrivalTime);
+                       if(calcMinFactor()!=null) {
+                           if (currProcess.factor > calcMinFactor().factor) {
+                               int indexCurr = readyQueue.indexOf(currProcess);
+                               int rep = readyQueue.indexOf(calcMinFactor());
+                               readyQueue.set(indexCurr, calcMinFactor());
+                               readyQueue.remove(rep);
+                               readyQueue.add(currProcess);
+                               currProcess.quantumTime = currProcess.quantumTime + remQuantum;
+                               break;
+                           }
+                       }
+                   }
+                   currProcess.updatedBurstTime--;
+               }
+               else {
+                   currProcess.quantumTime=0;
+                   readyQueue.remove(currProcess);
+                   deadList.add(currProcess);
+               }
+
+            }
+            if(currProcess.updatedBurstTime>0)
+            {
+                readyQueue.remove(currProcess);
+                readyQueue.add(currProcess);
+                currProcess.quantumTime=currProcess.quantumTime + 2;
+            }
+
+        }
+
+
     }
 }
