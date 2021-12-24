@@ -39,9 +39,13 @@ public class Main {
         Agat a= new Agat(processes);
         a.calculateV1();
         a.scheduleAgat();
-        a.getDeadList();
-        a.printHistoryFactor();
-        System.out.println("=========================");
-        a.printHistoryQt();
+        //a.getDeadList();
+        //a.printHistoryFactor();
+        //System.out.println("=========================");
+        //a.printHistoryQt();
+        //a.printWaiting();
+        //System.out.println(a.getAverageWaiting());
+        //a.getTurnAround();
+       // System.out.println(a.AverageTurnAround());
     }
 }

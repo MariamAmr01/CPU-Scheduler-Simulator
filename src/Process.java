@@ -9,7 +9,6 @@ public class Process {
     public int priorityNumber;
     public int quantumTime;
 
-    //n
     public int roundedQuantum;
     public int waitingTime;
     public int turnAroundTime;
@@ -18,7 +17,6 @@ public class Process {
     public int ceilV1;
     public int factor;
 
-    //n
     public ArrayList<Integer> historyQt=new ArrayList<>();
     public ArrayList<Integer> historyFactor=new ArrayList<>();
 
