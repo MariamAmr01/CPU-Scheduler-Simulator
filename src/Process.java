@@ -9,7 +9,7 @@ public class Process {
     public int waitingTime;
     public int turnAroundTime;
     //ceil Arrival time/v1
-    public int v1;
+    public int ceilV1;
     public int factor;
 
     public Process() {

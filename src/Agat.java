@@ -46,11 +46,9 @@ public class Agat {
                 v1=1;
             }
             else {
-
                  v1= ((float)processes.get(processes.size() - 1).arrivalTime)/10;
-
             }
-            processes.get(i).v1= (int) Math.ceil(processes.get(i).arrivalTime/v1);
+            processes.get(i).ceilV1= (int) Math.ceil(processes.get(i).arrivalTime/v1);
         }
 
     }
@@ -73,7 +71,7 @@ public class Agat {
         calculateV2();
         for (Process p : processes) {
 
-            p.factor = (10 - p.priorityNumber) + p.v1 + (int) Math.ceil(p.updatedBurstTime / v2);
+            p.factor = (10 - p.priorityNumber) + p.ceilV1 + (int) Math.ceil(p.updatedBurstTime / v2);
         }
     }
 }
