@@ -19,8 +19,8 @@ public class Process {
     public int factor;
 
     //n
-    public ArrayList<Integer> historyQt;
-    public ArrayList<Integer> historyFactor;
+    public ArrayList<Integer> historyQt=new ArrayList<>();
+    public ArrayList<Integer> historyFactor=new ArrayList<>();
 
     public Process() {
 

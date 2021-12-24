@@ -40,5 +40,8 @@ public class Main {
         a.calculateV1();
         a.scheduleAgat();
         a.getDeadList();
+        a.printHistoryFactor();
+        System.out.println("=========================");
+        a.printHistoryQt();
     }
 }

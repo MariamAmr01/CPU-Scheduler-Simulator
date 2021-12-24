@@ -78,6 +78,7 @@ public class Agat {
         for (Process p : processes) {
 
             p.factor = (10 - p.priorityNumber) + p.ceilV1 + (int) Math.ceil(p.updatedBurstTime / v2);
+            p.historyFactor.add(p.factor);
         }
     }
     public void checkTime()
@@ -107,59 +108,76 @@ public class Agat {
         }
         return p;
     }
-
+    public void printHistoryFactor()
+    {
+        for (Process process: processes) {
+            System.out.println(process.name+": ");
+            for (int i = 0; i < process.historyFactor.size(); i++) {
+                System.out.print(process.historyFactor.get(i)+" ");
+            }
+            System.out.print("\n");
+        }
+    }
+    public void printHistoryQt()
+    {
+        for (Process process: processes) {
+            System.out.println(process.name+": ");
+            for (int i = 0; i < process.historyQt.size(); i++) {
+                System.out.print(process.historyQt.get(i)+" ");
+            }
+            System.out.print("\n");
+        }
+    }
     public void scheduleAgat()
     {
         checkTime();
         while (deadList.size()!=processes.size()) {
-
             int q;
             Process currProcess=readyQueue.get(0);
-            //System.out.println(currProcess.arrivalTime);
+            currProcess.historyQt.add(currProcess.quantumTime);
             q=(Math.round((float)(40*currProcess.quantumTime)/100));
-            //System.out.println(q);
-           System.out.println(currProcess.name+" "+currProcess.quantumTime);
-            int remQuantum= currProcess.quantumTime; //3
+            System.out.println(currProcess.name+" "+currProcess.quantumTime);
+            int remQuantum= currProcess.quantumTime; //4
             calculateFactor();
-            for (int i = 0; i < currProcess.quantumTime; i++) {
+            for (int i = 1; i <= currProcess.quantumTime; i++) {
                 time++;
-                remQuantum--;
                 checkTime();
-                //System.out.println(currProcess.name+" Remainder: "+remQuantum);
+                currProcess.updatedBurstTime--;
                if(currProcess.updatedBurstTime!=0) {
-                   //time++;
-                   if (i == q) {
-                       //System.out.println(calcMinFactor().arrivalTime);
+                   if (i >= q) {
                        if(calcMinFactor()!=null) {
-                          // System.out.println( calcMinFactor().name+" factor: "+calcMinFactor().factor);
-                           //System.out.println("break");
                            if (currProcess.factor > calcMinFactor().factor) {
                                int indexCurr = readyQueue.indexOf(currProcess);
                                int rep = readyQueue.indexOf(calcMinFactor());
                                readyQueue.set(indexCurr, calcMinFactor());
                                readyQueue.remove(rep);
                                readyQueue.add(currProcess);
+                               remQuantum--;
                                currProcess.quantumTime = currProcess.quantumTime + remQuantum;
+                               currProcess.historyQt.add(currProcess.quantumTime);
                                break;
                            }
                        }
                    }
-                   currProcess.updatedBurstTime--;
+                   remQuantum--;
                }
                else {
                    currProcess.quantumTime=0;
+                   currProcess.historyQt.add(currProcess.quantumTime);
                    readyQueue.remove(currProcess);
                    deadList.add(currProcess);
                    break;
                }
 
             }
+            System.out.println(currProcess.name);
             if(currProcess.updatedBurstTime>0 && remQuantum==0)
             {
+               //System.out.println("mmmmmmmmmmmm");
                 readyQueue.remove(currProcess);
                 readyQueue.add(currProcess);
                 currProcess.quantumTime=currProcess.quantumTime + 2;
-                System.out.println("mmmmmmmmmmmm");
+                currProcess.historyQt.add(currProcess.quantumTime);
             }
 
         }
