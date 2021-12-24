@@ -37,7 +37,7 @@ public class Agat {
     public void getDeadList() {
         for (Process p : deadList) {
 
-            System.out.println(p.arrivalTime);
+            System.out.println(p.name);
         }
     }
 
@@ -60,12 +60,12 @@ public class Agat {
     public void calculateV2()
     {
         float maxBurstTime=0;
-        for (int i = 0; i < processes.size()-1; i++) {
+        for (Process process : processes) {
 
-            maxBurstTime=Math.max(processes.get(i).updatedBurstTime,processes.get(i+1).updatedBurstTime);
+            maxBurstTime = Math.max(maxBurstTime, process.updatedBurstTime);
 
         }
-
+        //System.out.println("maxBurst: "+maxBurstTime);
         if(maxBurstTime>10)
             v2=maxBurstTime/10;
         else v2=1;
@@ -74,6 +74,7 @@ public class Agat {
     public void calculateFactor()
     {
         calculateV2();
+        //System.out.println(v2);
         for (Process p : processes) {
 
             p.factor = (10 - p.priorityNumber) + p.ceilV1 + (int) Math.ceil(p.updatedBurstTime / v2);
@@ -93,10 +94,10 @@ public class Agat {
     public Process calcMinFactor()
     {
         Process p=null;
-        int minFactor=0;
-        for (int i = 0; i < readyQueue.size()-1; i++) {
+        int minFactor=Integer.MAX_VALUE;
+        for (Process process : readyQueue) {
 
-            minFactor=Math.min(readyQueue.get(i).factor,readyQueue.get(i+1).factor);
+            minFactor = Math.min(minFactor, process.factor);
         }
 
         for (Process p2 : readyQueue) {
@@ -116,19 +117,22 @@ public class Agat {
             Process currProcess=readyQueue.get(0);
             //System.out.println(currProcess.arrivalTime);
             q=(Math.round((float)(40*currProcess.quantumTime)/100));
-            System.out.println(currProcess.name+" "+currProcess.quantumTime);
+            //System.out.println(q);
+           System.out.println(currProcess.name+" "+currProcess.quantumTime);
             int remQuantum= currProcess.quantumTime; //3
             calculateFactor();
             for (int i = 0; i < currProcess.quantumTime; i++) {
                 time++;
                 remQuantum--;
                 checkTime();
-                System.out.println(currProcess.name+" Remainder: "+remQuantum);
+                //System.out.println(currProcess.name+" Remainder: "+remQuantum);
                if(currProcess.updatedBurstTime!=0) {
                    //time++;
                    if (i == q) {
                        //System.out.println(calcMinFactor().arrivalTime);
                        if(calcMinFactor()!=null) {
+                          // System.out.println( calcMinFactor().name+" factor: "+calcMinFactor().factor);
+                           //System.out.println("break");
                            if (currProcess.factor > calcMinFactor().factor) {
                                int indexCurr = readyQueue.indexOf(currProcess);
                                int rep = readyQueue.indexOf(calcMinFactor());
@@ -136,7 +140,6 @@ public class Agat {
                                readyQueue.remove(rep);
                                readyQueue.add(currProcess);
                                currProcess.quantumTime = currProcess.quantumTime + remQuantum;
-                               //System.out.println("mmmmmmmmmmm");
                                break;
                            }
                        }

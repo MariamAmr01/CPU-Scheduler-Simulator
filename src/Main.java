@@ -37,7 +37,8 @@ public class Main {
         processes.add(p3);
         processes.add(p4);
         Agat a= new Agat(processes);
+        a.calculateV1();
         a.scheduleAgat();
-        //a.getDeadList();
+        a.getDeadList();
     }
 }
