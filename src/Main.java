@@ -21,6 +21,7 @@ public class Main {
             p.arrivalTime=input.nextInt();
             System.out.println("Enter process "+(i+1)+" burst time:");
             p.burstTime=input2.nextInt();
+            p.updatedBurstTime= p.burstTime;
             System.out.println("Enter process "+(i+1)+" priority number:");
             p.priorityNumber=input2.nextInt();
             System.out.println("Enter process "+(i+1)+" time quantum: ");
