@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 import java.util.Scanner;
-
+import java.lang.Math;
 public class Main {
     public static void main(String args[]){
         ArrayList<Process> processes = new ArrayList<>();
@@ -28,10 +28,10 @@ public class Main {
 //            p.quantumTime= input.nextInt();
 //            processes.add(p);
 //        }
-        Process p1=new Process("","",0,17,4,4);
-        Process p2=new Process("","",3,6,9,3);
-        Process p3=new Process("","",4,10,3,5);
-        Process p4=new Process("","",29,4,10,2);
+        Process p1=new Process("p1","",0,17,4,4);
+        Process p2=new Process("p2","",3,6,9,3);
+        Process p3=new Process("p3","",4,10,3,5);
+        Process p4=new Process("p4","",29,4,10,2);
         processes.add(p1);
         processes.add(p2);
         processes.add(p3);

@@ -111,18 +111,21 @@ public class Agat {
     {
         checkTime();
         while (deadList.size()!=processes.size()) {
+
             int q;
             Process currProcess=readyQueue.get(0);
-            System.out.println(currProcess.arrivalTime);
+            //System.out.println(currProcess.arrivalTime);
             q=(Math.round((float)(40*currProcess.quantumTime)/100));
-            int remQuantum= currProcess.quantumTime;
+            System.out.println(currProcess.name+" "+currProcess.quantumTime);
+            int remQuantum= currProcess.quantumTime; //3
             calculateFactor();
             for (int i = 0; i < currProcess.quantumTime; i++) {
-
+                time++;
+                remQuantum--;
+                checkTime();
+                System.out.println(currProcess.name+" Remainder: "+remQuantum);
                if(currProcess.updatedBurstTime!=0) {
-                   time++;
-                   remQuantum--;
-                   checkTime();
+                   //time++;
                    if (i == q) {
                        //System.out.println(calcMinFactor().arrivalTime);
                        if(calcMinFactor()!=null) {
@@ -133,6 +136,7 @@ public class Agat {
                                readyQueue.remove(rep);
                                readyQueue.add(currProcess);
                                currProcess.quantumTime = currProcess.quantumTime + remQuantum;
+                               //System.out.println("mmmmmmmmmmm");
                                break;
                            }
                        }
@@ -143,14 +147,16 @@ public class Agat {
                    currProcess.quantumTime=0;
                    readyQueue.remove(currProcess);
                    deadList.add(currProcess);
+                   break;
                }
 
             }
-            if(currProcess.updatedBurstTime>0)
+            if(currProcess.updatedBurstTime>0 && remQuantum==0)
             {
                 readyQueue.remove(currProcess);
                 readyQueue.add(currProcess);
                 currProcess.quantumTime=currProcess.quantumTime + 2;
+                System.out.println("mmmmmmmmmmmm");
             }
 
         }
