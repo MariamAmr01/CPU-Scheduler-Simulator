@@ -1,12 +1,12 @@
+import javafx.util.Pair;
 import java.util.ArrayList;
 import java.lang.Math;
-
 public class Agat {
     private ArrayList<Process> processes;
     private ArrayList<Process> readyQueue= new ArrayList<>();
     private ArrayList<Process> deadList= new ArrayList<>();
-    // private ArrayList<Pair<Process,Integer>> waiting= new ArrayList<>();
-   private final ArrayList<String> waiting= new ArrayList<>();
+    private ArrayList<Pair<Process,Integer>> order= new ArrayList<>();
+    private final ArrayList<String> waiting= new ArrayList<>();
     private float v2;
     private int time;
 
@@ -146,7 +146,22 @@ public class Agat {
         }
         System.out.println("-------------------------");
     }
+    public void setWaiting()
+    {
+        for (Process process: processes) {
+            process.waitingTime=process.turnAroundTime-process.burstTime;
+        }
+    }
 
+    public void getOrder()
+    {
+        System.out.println("Order of Processing: ");
+        System.out.println(order.get(0).getKey().name+" : Start time: "+ 0 +", End time: "+order.get(0).getValue());
+        for (int i = 1; i < order.size() ; i++) {
+            System.out.println(order.get(i).getKey().name+" : Start time: "+ order.get(i-1).getValue() +", End time: "+order.get(i).getValue());
+        }
+        System.out.println("-------------------------");
+    }
     public double getAverageWaiting()
     {
         int sum=0;
@@ -188,9 +203,11 @@ public class Agat {
         scheduleAgat();
         System.out.println("======================");
         System.out.println("AGAT OUTPUT: ");
+        getOrder();
         getDeadList();
         printHistoryFactor();
         printHistoryQt();
+        setWaiting();
         printWaiting();
         getTurnAround();
         System.out.println("Average waiting time: "+getAverageWaiting());
@@ -207,12 +224,6 @@ public class Agat {
             Process currProcess=readyQueue.get(0);
             if(!currProcess.historyQt.contains(currProcess.quantumTime))
                 currProcess.historyQt.add(currProcess.quantumTime);
-
-            if(!waiting.contains(currProcess.name))
-            {
-                waiting.add(currProcess.name);
-                currProcess.waitingTime=time-currProcess.arrivalTime;
-            }
 
             q=(Math.round((float)(40*currProcess.quantumTime)/100));
 
@@ -250,6 +261,8 @@ public class Agat {
                }
 
             }
+            Pair p= new Pair(currProcess,time);
+            order.add(p);
             if(currProcess.updatedBurstTime>0 && remQuantum==0)
             {
                 readyQueue.remove(currProcess);
