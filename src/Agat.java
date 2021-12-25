@@ -1,12 +1,12 @@
 import java.util.ArrayList;
 import java.lang.Math;
-import javafx.util.Pair;
 
 public class Agat {
-    private ArrayList<Process> processes = new ArrayList<>();
+    private ArrayList<Process> processes;
     private ArrayList<Process> readyQueue= new ArrayList<>();
     private ArrayList<Process> deadList= new ArrayList<>();
-    private ArrayList<Pair<Process,Integer>> waiting= new ArrayList<>();
+    // private ArrayList<Pair<Process,Integer>> waiting= new ArrayList<>();
+   private final ArrayList<String> waiting= new ArrayList<>();
     private float v2;
     private int time;
 
@@ -38,10 +38,12 @@ public class Agat {
     }
 
     public void getDeadList() {
+        System.out.println("Execution order: ");
         for (Process p : deadList) {
 
             System.out.println(p.name);
         }
+        System.out.println("-------------------------");
     }
 
     public void calculateV1()
@@ -80,6 +82,7 @@ public class Agat {
 
         for (Process p : processes) {
 
+            if(deadList.contains(p)) continue;
             p.factor = (10 - p.priorityNumber) + p.ceilV1 + (int) Math.ceil(p.updatedBurstTime / v2);
             p.historyFactor.add(p.factor);
         }
@@ -113,6 +116,7 @@ public class Agat {
     }
     public void printHistoryFactor()
     {
+        System.out.println("History of factor calculation per process: ");
         for (Process process: processes) {
             System.out.println(process.name+": ");
             for (int i = 0; i < process.historyFactor.size(); i++) {
@@ -120,9 +124,11 @@ public class Agat {
             }
             System.out.print("\n");
         }
+        System.out.println("-------------------------");
     }
     public void printHistoryQt()
     {
+        System.out.println("History of quantum per process: ");
         for (Process process: processes) {
             System.out.println(process.name+": ");
             for (int i = 0; i < process.historyQt.size(); i++) {
@@ -130,12 +136,15 @@ public class Agat {
             }
             System.out.print("\n");
         }
+        System.out.println("-------------------------");
     }
     public void printWaiting()
     {
+        System.out.println("Waiting time for each process: ");
         for (Process process: processes) {
             System.out.println(process.name+" time: "+ process.waitingTime);
         }
+        System.out.println("-------------------------");
     }
 
     public double getAverageWaiting()
@@ -157,9 +166,11 @@ public class Agat {
 
     public void getTurnAround()
     {
+        System.out.println("Turn around time for each process: ");
         for (Process process: processes) {
             System.out.println(process.name+" time: "+ process.turnAroundTime);
         }
+        System.out.println("-------------------------");
     }
 
     public double AverageTurnAround()
@@ -172,29 +183,36 @@ public class Agat {
         average=(float)sum/processes.size();
         return average;
     }
-
+    public void showAgatOutput()
+    {
+        scheduleAgat();
+        System.out.println("======================");
+        System.out.println("AGAT OUTPUT: ");
+        getDeadList();
+        printHistoryFactor();
+        printHistoryQt();
+        printWaiting();
+        getTurnAround();
+        System.out.println("Average waiting time: "+getAverageWaiting());
+        System.out.println("Average turn around time: "+AverageTurnAround());
+        System.out.println("======================");
+    }
     public void scheduleAgat()
     {
+        calculateV1();
         checkTime();
         while (deadList.size()!=processes.size()) {
-            int q; boolean exists=false;
+            int q;
 
             Process currProcess=readyQueue.get(0);
             if(!currProcess.historyQt.contains(currProcess.quantumTime))
                 currProcess.historyQt.add(currProcess.quantumTime);
-            Pair<Process,Integer> p=new Pair(currProcess,time-currProcess.arrivalTime);
 
-            for (Pair<Process, Integer> processIntegerPair : waiting) {
-
-                if (processIntegerPair.getKey().name.equals(p.getKey().name))
-                    exists = true;
-            }
-            if(!exists)
+            if(!waiting.contains(currProcess.name))
             {
-                waiting.add(p);
-                p.getKey().waitingTime=p.getValue();
+                waiting.add(currProcess.name);
+                currProcess.waitingTime=time-currProcess.arrivalTime;
             }
-
 
             q=(Math.round((float)(40*currProcess.quantumTime)/100));
 
