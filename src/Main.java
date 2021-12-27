@@ -30,12 +30,22 @@ public class Main {
         Process p1=new Process("p1","",0,17,4,4);
         Process p2=new Process("p2","",3,6,9,3);
         Process p3=new Process("p3","",4,10,3,5);
-        Process p4=new Process("p4","",29,4,10,2);
+        Process p4=new Process("p4","",29,4,8,2);
         processes.add(p1);
         processes.add(p2);
         processes.add(p3);
         processes.add(p4);
         Agat a= new Agat(processes);
         a.showAgatOutput();
+//        SJF s= new SJF(processes);
+//        SRTF sr = new SRTF();
+//        Process processes1[] = {
+//                new Process("P1","red",0,8,-1,5),
+//                new Process("P2","red",1,4,-1,5),
+//                new Process("P3","red",2,9,-1,5),
+//                new Process("P4","red",3,5,-1,5)
+//        };
+//        int size = processes1.length;
+//        SRTF.calculateAverageTime(processes1, size);
     }
 }

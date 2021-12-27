@@ -222,45 +222,54 @@ public class Agat {
             int q;
 
             Process currProcess=readyQueue.get(0);
+
             if(!currProcess.historyQt.contains(currProcess.quantumTime))
                 currProcess.historyQt.add(currProcess.quantumTime);
 
             q=(Math.round((float)(40*currProcess.quantumTime)/100));
 
             int remQuantum= currProcess.quantumTime;
-            calculateFactor();
-            for (int i = 1; i <= currProcess.quantumTime; i++) {
+            int quantum= currProcess.quantumTime;
+
+            if(deadList.size()<processes.size()-1) {
+                calculateFactor();
+            }
+            else quantum= currProcess.updatedBurstTime;
+
+            for (int i = 1; i <= quantum; i++) {
                 time++;
                 checkTime();
                 currProcess.updatedBurstTime--;
-               if(currProcess.updatedBurstTime!=0) {
-                   if (i >= q) {
-                       if(calcMinFactor()!=null) {
-                           if (currProcess.factor > calcMinFactor().factor) {
-                               int indexCurr = readyQueue.indexOf(currProcess);
-                               int rep = readyQueue.indexOf(calcMinFactor());
-                               readyQueue.set(indexCurr, calcMinFactor());
-                               readyQueue.remove(rep);
-                               readyQueue.add(currProcess);
-                               remQuantum--;
-                               currProcess.quantumTime = currProcess.quantumTime + remQuantum;
-                               currProcess.historyQt.add(currProcess.quantumTime);
-                               break;
-                           }
-                       }
-                   }
-                   remQuantum--;
-               }
-               else {
-                   currProcess.quantumTime=0;
-                   currProcess.historyQt.add(currProcess.quantumTime);
-                   readyQueue.remove(currProcess);
-                   deadList.add(currProcess);
-                   setTurnAround(time,currProcess);
-                   break;
-               }
+                if (currProcess.updatedBurstTime != 0) {
+                    if (i >= q) {
+                        if (calcMinFactor() != null) {
+                            if (currProcess.factor > calcMinFactor().factor) {
+                                int indexCurr = readyQueue.indexOf(currProcess);
+                                int rep = readyQueue.indexOf(calcMinFactor());
+                                readyQueue.set(indexCurr, calcMinFactor());
+                                readyQueue.remove(rep);
+                                readyQueue.add(currProcess);
+                                remQuantum--;
+                                currProcess.quantumTime = currProcess.quantumTime + remQuantum;
+                                currProcess.historyQt.add(currProcess.quantumTime);
+                                break;
+                            }
+                        }
+                    }
+                    remQuantum--;
+                }
+
+                else {
+                    currProcess.quantumTime = 0;
+                    currProcess.historyQt.add(currProcess.quantumTime);
+                    readyQueue.remove(currProcess);
+                    deadList.add(currProcess);
+                    setTurnAround(time, currProcess);
+                    break;
+                }
 
             }
+
             Pair p= new Pair(currProcess,time);
             order.add(p);
             if(currProcess.updatedBurstTime>0 && remQuantum==0)

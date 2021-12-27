@@ -8,7 +8,7 @@ public class Process {
     public int updatedBurstTime;
     public int priorityNumber;
     public int quantumTime;
-
+    public int endTime;
     public int roundedQuantum;
     public int waitingTime;
     public int turnAroundTime;
@@ -32,61 +32,76 @@ public class Process {
         this.priorityNumber = priorityNumber;
         this.quantumTime = quantumTime;
         updatedBurstTime=burstTime;
+        endTime=-1;
+    }
+    public boolean isEnded()
+    {
+        if(endTime!=-1) return true;
+        else return false;
     }
 
-//    public void setName(String name) {
-//        this.name = name;
-//    }
-//
-//    public void setColor(String color) {
-//        this.color = color;
-//    }
-//
-//    public void setArrivalTime(int arrivalTime) {
-//        this.arrivalTime = arrivalTime;
-//    }
-//
-//    public void setBurstTime(int burstTime) {
-//        this.burstTime = burstTime;
-//    }
-//
-//    public void setQuantumTime(int quantumTime) {
-//        this.quantumTime = quantumTime;
-//    }
-//
-//    public void setWaitingTime(int waitingTime) {this.waitingTime = waitingTime;}
-//
-//    public void setturnAroundTime(int turnAroundTime) {this.turnAroundTime = turnAroundTime;}
-//
-//    public void setPriorityNumber(int priorityNumber) {
-//        this.priorityNumber = priorityNumber;
-//    }
-//
-//    public String getName() {
-//        return name;
-//    }
-//
-//    public String getColor() {
-//        return color;
-//    }
-//
-//    public int getArrivalTime() {
-//        return arrivalTime;
-//    }
-//
-//    public int getBurstTime() {
-//        return burstTime;
-//    }
-//
-//    public int getPriorityNumber() {
-//        return priorityNumber;
-//    }
-//
-//    public int getQuantumTime() {
-//        return quantumTime; }
-//
-//    public int getTurnAroundTime() { return turnAroundTime; }
-//
-//    public int getWaitingTime() { return waitingTime; }
+    public void setEndTime(int time)
+    {
+        endTime=time;
+    }
+
+    public int getEndTime() {
+        return endTime;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    public void setArrivalTime(int arrivalTime) {
+        this.arrivalTime = arrivalTime;
+    }
+
+    public void setBurstTime(int burstTime) {
+        this.burstTime = burstTime;
+    }
+
+    public void setQuantumTime(int quantumTime) {
+        this.quantumTime = quantumTime;
+    }
+
+    public void setWaitingTime(int waitingTime) {this.waitingTime = waitingTime;}
+
+    public void setturnAroundTime(int turnAroundTime) {this.turnAroundTime = turnAroundTime;}
+
+    public void setPriorityNumber(int priorityNumber) {
+        this.priorityNumber = priorityNumber;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public int getArrivalTime() {
+        return arrivalTime;
+    }
+
+    public int getBurstTime() {
+        return burstTime;
+    }
+
+    public int getPriorityNumber() {
+        return priorityNumber;
+    }
+
+    public int getQuantumTime() {
+        return quantumTime; }
+
+    public int getTurnAroundTime() { return turnAroundTime; }
+
+    public int getWaitingTime() { return waitingTime; }
 
 }
