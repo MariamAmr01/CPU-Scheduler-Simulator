@@ -9,6 +9,7 @@ public class Process {
     public int priorityNumber;
     public int quantumTime;
     public int endTime;
+    public int age;
     public int roundedQuantum;
     public int waitingTime;
     public int turnAroundTime;
@@ -20,8 +21,13 @@ public class Process {
     public ArrayList<Integer> historyQt=new ArrayList<>();
     public ArrayList<Integer> historyFactor=new ArrayList<>();
 
-    public Process() {
-
+    public Process()
+    {
+        name = "";
+        arrivalTime = 0;
+        burstTime = 0;
+        endTime = -1;
+        age=6;
     }
 
     public Process(String name, String color, int arrivalTime, int burstTime, int priorityNumber, int quantumTime) {
@@ -33,6 +39,7 @@ public class Process {
         this.quantumTime = quantumTime;
         updatedBurstTime=burstTime;
         endTime=-1;
+        age=6;
     }
     public boolean isEnded()
     {

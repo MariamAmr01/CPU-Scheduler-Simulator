@@ -5,7 +5,9 @@ public class Agat {
     private ArrayList<Process> processes;
     private ArrayList<Process> readyQueue= new ArrayList<>();
     private ArrayList<Process> deadList= new ArrayList<>();
-    private ArrayList<Pair<Process,Integer>> order= new ArrayList<>();
+//    private ArrayList<Pair<Process,Integer>> order= new ArrayList<>();
+    private ArrayList<Process> orderProcess= new ArrayList<>();
+    private ArrayList<Integer> orderTime= new ArrayList<>();
     private final ArrayList<String> waiting= new ArrayList<>();
     private float v2;
     private int time;
@@ -156,9 +158,9 @@ public class Agat {
     public void getOrder()
     {
         System.out.println("Order of Processing: ");
-        System.out.println(order.get(0).getKey().name+" : Start time: "+ 0 +", End time: "+order.get(0).getValue());
-        for (int i = 1; i < order.size() ; i++) {
-            System.out.println(order.get(i).getKey().name+" : Start time: "+ order.get(i-1).getValue() +", End time: "+order.get(i).getValue());
+        System.out.println(orderProcess.get(0).name+" : Start time: "+ 0 +", End time: "+orderTime.get(0));
+        for (int i = 1; i < orderProcess.size() ; i++) {
+            System.out.println(orderProcess.get(i).name+" : Start time: "+ orderTime.get(i-1)+", End time: "+orderTime.get(i));
         }
         System.out.println("-------------------------");
     }
@@ -270,8 +272,10 @@ public class Agat {
 
             }
 
-            Pair p= new Pair(currProcess,time);
-            order.add(p);
+//            Pair p= new Pair(currProcess,time); p1 3 p2 6 p1 7
+//            order.add(p);
+            orderTime.add(time);
+            orderProcess.add(currProcess);
             if(currProcess.updatedBurstTime>0 && remQuantum==0)
             {
                 readyQueue.remove(currProcess);
