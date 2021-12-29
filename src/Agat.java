@@ -198,6 +198,15 @@ public class Agat {
         average=(float)sum/processes.size();
         return average;
     }
+
+    public ArrayList<Integer> getOrderTime() {
+        return orderTime;
+    }
+
+    public ArrayList<Process> getOrderProcess() {
+        return orderProcess;
+    }
+
     public void showAgatOutput()
     {
         scheduleAgat();
