@@ -214,76 +214,75 @@ public class Agat {
         System.out.println("Average turn around time: "+AverageTurnAround());
         System.out.println("======================");
     }
-    public void scheduleAgat()
-    {
+    public void scheduleAgat() {
         calculateV1();
         checkTime();
-        while (deadList.size()!=processes.size()) {
-            int q;
+            while (deadList.size() != processes.size()) {
+                if (readyQueue.size() != 0) {
+                int q;
 
-            Process currProcess=readyQueue.get(0);
+                Process currProcess = readyQueue.get(0);
 
-            if(!currProcess.historyQt.contains(currProcess.quantumTime))
-                currProcess.historyQt.add(currProcess.quantumTime);
+                if (!currProcess.historyQt.contains(currProcess.quantumTime))
+                    currProcess.historyQt.add(currProcess.quantumTime);
 
-            q=(Math.round((float)(40*currProcess.quantumTime)/100));
+                q = (Math.round((float) (40 * currProcess.quantumTime) / 100));
 
-            int remQuantum= currProcess.quantumTime;
-            int quantum= currProcess.quantumTime;
+                int remQuantum = currProcess.quantumTime;
+                int quantum = currProcess.quantumTime;
 
-            if(deadList.size()<processes.size()-1) {
-                calculateFactor();
-            }
-            else quantum= currProcess.updatedBurstTime;
+                if (deadList.size() < processes.size() - 1) {
+                    calculateFactor();
+                } else quantum = currProcess.updatedBurstTime;
 
-            for (int i = 1; i <= quantum; i++) {
-                time++;
-                checkTime();
-                currProcess.updatedBurstTime--;
-                if (currProcess.updatedBurstTime != 0) {
-                    if (i >= q) {
-                        if (calcMinFactor() != null) {
-                            if (currProcess.factor > calcMinFactor().factor) {
-                                int indexCurr = readyQueue.indexOf(currProcess);
-                                int rep = readyQueue.indexOf(calcMinFactor());
-                                readyQueue.set(indexCurr, calcMinFactor());
-                                readyQueue.remove(rep);
-                                readyQueue.add(currProcess);
-                                remQuantum--;
-                                currProcess.quantumTime = currProcess.quantumTime + remQuantum;
-                                currProcess.historyQt.add(currProcess.quantumTime);
-                                break;
+                for (int i = 1; i <= quantum; i++) {
+                    time++;
+                    checkTime();
+                    currProcess.updatedBurstTime--;
+                    if (currProcess.updatedBurstTime != 0) {
+                        if (i >= q) {
+                            if (calcMinFactor() != null) {
+                                if (currProcess.factor > calcMinFactor().factor) {
+                                    int indexCurr = readyQueue.indexOf(currProcess);
+                                    int rep = readyQueue.indexOf(calcMinFactor());
+                                    readyQueue.set(indexCurr, calcMinFactor());
+                                    readyQueue.remove(rep);
+                                    readyQueue.add(currProcess);
+                                    remQuantum--;
+                                    currProcess.quantumTime = currProcess.quantumTime + remQuantum;
+                                    currProcess.historyQt.add(currProcess.quantumTime);
+                                    break;
+                                }
                             }
                         }
+                        remQuantum--;
+                    } else {
+                        currProcess.quantumTime = 0;
+                        currProcess.historyQt.add(currProcess.quantumTime);
+                        readyQueue.remove(currProcess);
+                        deadList.add(currProcess);
+                        setTurnAround(time, currProcess);
+                        break;
                     }
-                    remQuantum--;
+
                 }
 
-                else {
-                    currProcess.quantumTime = 0;
-                    currProcess.historyQt.add(currProcess.quantumTime);
+                orderTime.add(time);
+                orderProcess.add(currProcess);
+                if (currProcess.updatedBurstTime > 0 && remQuantum == 0) {
                     readyQueue.remove(currProcess);
-                    deadList.add(currProcess);
-                    setTurnAround(time, currProcess);
-                    break;
+                    readyQueue.add(currProcess);
+                    currProcess.quantumTime = currProcess.quantumTime + 2;
+                    currProcess.historyQt.add(currProcess.quantumTime);
                 }
 
-            }
-
-//            Pair p= new Pair(currProcess,time); p1 3 p2 6 p1 7
-//            order.add(p);
-            orderTime.add(time);
-            orderProcess.add(currProcess);
-            if(currProcess.updatedBurstTime>0 && remQuantum==0)
-            {
-                readyQueue.remove(currProcess);
-                readyQueue.add(currProcess);
-                currProcess.quantumTime=currProcess.quantumTime + 2;
-                currProcess.historyQt.add(currProcess.quantumTime);
-            }
+                }
+                else {
+                    time++;
+                    checkTime();
+                }
 
         }
-
 
     }
 }

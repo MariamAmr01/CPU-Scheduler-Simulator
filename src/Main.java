@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.Scanner;
 public class Main {
+    //public static int contextSwitching=2;
     public static void main(String args[]){
         ArrayList<Process> processes = new ArrayList<>();
         Scanner input = new Scanner(System.in);
@@ -28,21 +29,26 @@ public class Main {
 //            processes.add(p);
 //        }
 
-        Process p1=new Process("p1","",0,17,4,4);
-        Process p2=new Process("p2","",3,6,9,3);
-        Process p3=new Process("p3","",4,10,3,5);
-        Process p4=new Process("p4","",29,4,8,2);
+//        Process p1=new Process("p1","",0,17,4,4);
+//        Process p2=new Process("p2","",3,6,9,3);
+//        Process p3=new Process("p3","",4,10,3,5);
+//        Process p4=new Process("p4","",29,4,8,2);
+        Process p1=new Process("p1","",0,6,1,4);
+        Process p2=new Process("p2","",1,5,1,3);
+        Process p3=new Process("p3","",2,3,3,5);
+        Process p4=new Process("p4","",2,3,2,2);
 
         processes.add(p1);
         processes.add(p2);
         processes.add(p3);
         processes.add(p4);
-        Agat a= new Agat(processes);
-        a.showAgatOutput();
-        SRTF sr = new SRTF();
-        int size = processes.size();
-        sr.calculateAverageTime(processes, size, 1);
+        //Agat a= new Agat(processes);
+        //a.showAgatOutput();
+        //SRTF sr = new SRTF();
+        //int size = processes.size();
+        //sr.calculateAverageTime(processes, size, 1);
         SJF s = new SJF(processes);
+       // PriorityScheduling p=new PriorityScheduling(processes,2);
 
 
     }

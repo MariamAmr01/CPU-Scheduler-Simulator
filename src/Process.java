@@ -10,7 +10,6 @@ public class Process {
     public int quantumTime;
     public int endTime;
     public int age;
-    public int roundedQuantum;
     public int waitingTime;
     public int turnAroundTime;
 
