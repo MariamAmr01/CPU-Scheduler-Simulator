@@ -201,8 +201,9 @@ public class Agat {
     public void showAgatOutput()
     {
         scheduleAgat();
-        System.out.println("======================");
+        System.out.println("================================");
         System.out.println("AGAT OUTPUT: ");
+        System.out.println("-------------");
         getOrder();
         getDeadList();
         printHistoryFactor();
@@ -212,7 +213,7 @@ public class Agat {
         getTurnAround();
         System.out.println("Average waiting time: "+getAverageWaiting());
         System.out.println("Average turn around time: "+AverageTurnAround());
-        System.out.println("======================");
+        System.out.println("================================");
     }
     public void scheduleAgat() {
         calculateV1();
@@ -220,7 +221,6 @@ public class Agat {
             while (deadList.size() != processes.size()) {
                 if (readyQueue.size() != 0) {
                 int q;
-
                 Process currProcess = readyQueue.get(0);
 
                 if (!currProcess.historyQt.contains(currProcess.quantumTime))

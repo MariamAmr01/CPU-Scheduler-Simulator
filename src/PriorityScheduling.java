@@ -37,10 +37,11 @@ public class PriorityScheduling {
                 else  return 1;
             }
         });
-
+        System.out.println("================================");
+        System.out.println("Priority Scheduling: ");
+        System.out.println("-------------------");
         System.out.print("Processes execution order : \n");
-        for (int i = 0 ; i < allProcesses.size(); i++)
-            System.out.print(allProcesses.get(i).getName() + " ") ;
+        for (Process process : allProcesses) System.out.print(process.getName() + " ");
         System.out.println();
 
 
@@ -100,14 +101,13 @@ public class PriorityScheduling {
 
         System.out.println();
         System.out.println("Process  ArrivalTime  BurstTime  Priority  TurnaroundTime  WaitingTime ");
-        for (int i = 0; i < n; i++)
-        {
-            System.out.print(allProcesses.get(i).getName() + "        ");
-            System.out.print(allProcesses.get(i).getArrivalTime() + "	 	       ");
-            System.out.print(allProcesses.get(i).getBurstTime() + "           ");
-            System.out.print(allProcesses.get(i).getPriorityNumber() + "	    ");
-            System.out.print(allProcesses.get(i).getTurnAroundTime() + "              ");
-            System.out.print(allProcesses.get(i).getWaitingTime());
+        for (Process allProcess : allProcesses) {
+            System.out.print(allProcess.getName() + "        ");
+            System.out.print(allProcess.getArrivalTime() + "	 	       ");
+            System.out.print(allProcess.getBurstTime() + "           ");
+            System.out.print(allProcess.getPriorityNumber() + "	    ");
+            System.out.print(allProcess.getTurnAroundTime() + "              ");
+            System.out.print(allProcess.getWaitingTime());
             System.out.println();
 
         }

@@ -40,11 +40,6 @@ public class Process {
         endTime=-1;
         age=6;
     }
-    public boolean isEnded()
-    {
-        if(endTime!=-1) return true;
-        else return false;
-    }
 
     public void setEndTime(int time)
     {

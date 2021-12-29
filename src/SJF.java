@@ -1,11 +1,15 @@
 import java.util.ArrayList;
 
+
+
 public class SJF {
     public static ArrayList<Process> processes;
     public static ArrayList<Process> sortedprocess = new ArrayList<>();
 
     public SJF(ArrayList<Process>processes){
         this.processes = processes;
+        System.out.println("SJF: ");
+        System.out.println("------");
         System.out.println("processes execution order ");
         calCompletionTime(processes);
         calTurnaroundTime(processes);
@@ -14,20 +18,30 @@ public class SJF {
 
     public static void calCompletionTime(ArrayList<Process> processes )
     {
-        int startTime=0;
+        int startTime=processes.get(1).getArrivalTime();
+
+        for(int i =1;i<processes.size();i++){
+            if(processes.get(i).getArrivalTime()<startTime){
+                startTime = processes.get(i).arrivalTime;
+            }
+            break;
+        }
+
         for(int j=0;j<processes.size();j++)
         {
             Process minBTprocess = new Process();
             int minBT = Integer.MAX_VALUE;
-            for (Process process : processes) {
-                if (startTime - process.getArrivalTime() >= process.age && process.getEndTime() == -1 && process.getArrivalTime() <= startTime) {
-                    minBT = process.getBurstTime();
-                    minBTprocess = process;
+            for(int i = 0; i<processes.size(); i++)
+            {
+                if(startTime-processes.get(i).getArrivalTime()>=processes.get(i).age && processes.get(i).getEndTime()==-1&& processes.get(i).getArrivalTime()<=startTime) {
+                    minBT = processes.get(i).getBurstTime();
+                    minBTprocess = processes.get(i);
                     break;
                 }
-                if (process.getBurstTime() < minBT && process.getEndTime() == -1 && process.getArrivalTime() <= startTime) {
-                    minBT = process.getBurstTime();
-                    minBTprocess = process;
+                if(processes.get(i).getBurstTime() < minBT&& processes.get(i).getEndTime()==-1&& processes.get(i).getArrivalTime()<=startTime)
+                {
+                    minBT = processes.get(i).getBurstTime();
+                    minBTprocess = processes.get(i);
                 }
             }
             startTime+=minBT;
@@ -35,12 +49,8 @@ public class SJF {
             if(minBTprocess != null)
             {
 
-                minBTprocess.setBurstTime(minBTprocess.getBurstTime()-minBTprocess.getBurstTime());
-                if(minBTprocess.getBurstTime()==0)
-                {
-                    minBTprocess.setEndTime(startTime);
-                    sortedprocess.add(minBTprocess);
-                }
+                minBTprocess.setEndTime(startTime);
+                sortedprocess.add(minBTprocess);
 
             }
 
@@ -52,11 +62,11 @@ public class SJF {
         double avgTurnaroundTime = 0.0;
         System.out.println();
         System.out.println("turnaround time for each process is:");
-        for (Process process : processes) {
-            int tat = process.getEndTime() - process.getArrivalTime();
-            avgTurnaroundTime += tat;
-            System.out.println(process.getName() + ": " + tat);
-            process.setturnAroundTime(tat);
+        for(int i =0;i<processes.size();i++){
+            int tat = processes.get(i).getEndTime() - processes.get(i).getArrivalTime();
+            avgTurnaroundTime+=tat;
+            System.out.println(processes.get(i).getName()+": "+ tat);
+            processes.get(i).setturnAroundTime(tat);
         }
         System.out.println("Average turnaround time is " + (avgTurnaroundTime/processes.size()));
     }
@@ -64,10 +74,11 @@ public class SJF {
         double avgWaitingTime = 0.0;
         System.out.println();
         System.out.println("waiting time for each process is ");
-        for (Process process : processes) {
-            int wt = process.getTurnAroundTime() - process.getBurstTime();
-            System.out.println(process.getName() + " : " + wt);
-            avgWaitingTime += wt;
+        for(int i =0; i<processes.size();i++)
+        {
+            int wt = processes.get(i).getTurnAroundTime()-processes.get(i).getBurstTime();
+            System.out.println(processes.get(i).getName()+" : "+wt);
+            avgWaitingTime+=wt;
         }
         System.out.println("Average waiting time is " +(avgWaitingTime/processes.size()));
 
@@ -77,4 +88,3 @@ public class SJF {
 
 
 }
-

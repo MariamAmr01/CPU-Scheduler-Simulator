@@ -84,6 +84,8 @@ public class SRTF {
             }
             timer++;
         }
+        System.out.println("SRTF :-");
+        System.out.println("-----");
         System.out.print("Processes execution order :");
         System.out.print(processOrder);
         System.out.println();
@@ -103,8 +105,6 @@ public class SRTF {
         double sumTurnAroundTime = 0;
         calculateWaitingTime(processes, size, contextSwitching);
         calculateTurnAroundTime(processes, size);
-        System.out.println("SRTF :-");
-        System.out.println("-----");
         System.out.println("Process    Waiting Time    TurnAround Time");
 
         for(int i = 0; i < size; i++)
