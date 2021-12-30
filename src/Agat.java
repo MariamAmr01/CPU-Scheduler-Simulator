@@ -182,7 +182,6 @@ public class Agat {
     public void showAgatOutput()
     {
         scheduleAgat();
-        System.out.println("======================");
         System.out.println("AGAT OUTPUT: ");
         getOrder();
         getDeadList();

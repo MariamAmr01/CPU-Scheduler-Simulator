@@ -38,6 +38,8 @@ public class Main {
             System.out.println("Enter process "+(i+1)+" time quantum: ");
             p.quantumTime= input.nextInt();
 
+            System.out.println("======================");
+
             processes.add(p);
         }
 
