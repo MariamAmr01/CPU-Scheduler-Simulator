@@ -39,7 +39,7 @@ public class Main {
 //        Process p2=new Process("p2","",1,5,1,3);
 //        Process p3=new Process("p3","",2,3,3,5);
 //        Process p4=new Process("p4","",2,3,2,2);
-//
+////
 //        processes.add(p1);
 //        processes.add(p2);
 //        processes.add(p3);

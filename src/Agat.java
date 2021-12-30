@@ -225,7 +225,19 @@ public class Agat {
             }
         });
     }
+    public int getMinArrivalTime()
+    {
+        int minTime=Integer.MAX_VALUE;
+        for (Process process : processes) {
+
+            minTime = Math.min(minTime, process.arrivalTime);
+        }
+        return minTime;
+    }
     public void scheduleAgat() {
+
+        time=getMinArrivalTime();
+
         calculateV1();
         checkTime();
 
@@ -244,77 +256,72 @@ public class Agat {
         if(updated){
             sort();
         }
+
         while (deadList.size() != processes.size()) {
-            if (readyQueue.size() != 0) {
-                int q;
-                if(!updated){
-                    currProcess = readyQueue.get(0);
-                }
-
-                if (!currProcess.historyQt.contains(currProcess.quantumTime))
-                    currProcess.historyQt.add(currProcess.quantumTime);
-
-                q = (Math.round((float) (40 * currProcess.quantumTime) / 100));
-
-                int remQuantum = currProcess.quantumTime;
-                int quantum = currProcess.quantumTime;
-
-                if (deadList.size() < processes.size() - 1 && !updated) {
-                    calculateFactor();
-                } else quantum = currProcess.updatedBurstTime;
-
-                for (int i = 1; i <= quantum; i++) {
-                    time++;
-                    checkTime();
-                    currProcess.updatedBurstTime--;
-                    if (currProcess.updatedBurstTime != 0) {
-                        if (i >= q) {
-                            if (calcMinFactor() != null) {
-                                if (currProcess.factor > calcMinFactor().factor) {
-
-                                    int indexCurr = readyQueue.indexOf(currProcess);
-
-                                    int rep = readyQueue.indexOf(calcMinFactor());
-                                    readyQueue.set(indexCurr, calcMinFactor());
-
-                                    readyQueue.remove(rep);
-                                    readyQueue.add(currProcess);
-                                    remQuantum--;
-                                    currProcess.quantumTime = currProcess.quantumTime + remQuantum;
-                                    currProcess.historyQt.add(currProcess.quantumTime);
-                                    updated = false;
-                                    break;
-                                }
-                            }
-                        }
-                        remQuantum--;
-                    } else {
-                        currProcess.quantumTime = 0;
-                        currProcess.historyQt.add(currProcess.quantumTime);
-                        readyQueue.remove(currProcess);
-                        deadList.add(currProcess);
-                        setTurnAround(time, currProcess);
-                        updated = false;
-                        break;
-                    }
-
-                }
-
-                orderTime.add(time);
-                orderProcess.add(currProcess);
-                if (currProcess.updatedBurstTime > 0 && remQuantum == 0) {
-                    readyQueue.remove(currProcess);
-                    readyQueue.add(currProcess);
-                    currProcess.quantumTime = currProcess.quantumTime + 2;
-                    currProcess.historyQt.add(currProcess.quantumTime);
-                    updated =false;
-                }
-
+            int q;
+            if (!updated) {
+                currProcess = readyQueue.get(0);
             }
-            else {
+
+            if (!currProcess.historyQt.contains(currProcess.quantumTime))
+                currProcess.historyQt.add(currProcess.quantumTime);
+
+            q = (Math.round((float) (40 * currProcess.quantumTime) / 100));
+
+            int remQuantum = currProcess.quantumTime;
+            int quantum = currProcess.quantumTime;
+
+            if (deadList.size() < processes.size() - 1 && !updated) {
+                calculateFactor();
+            } else quantum = currProcess.updatedBurstTime;
+
+            for (int i = 1; i <= quantum; i++) {
                 time++;
                 checkTime();
+                currProcess.updatedBurstTime--;
+                if (currProcess.updatedBurstTime != 0) {
+                    if (i >= q) {
+                        if (calcMinFactor() != null) {
+                            if (currProcess.factor > calcMinFactor().factor) {
+
+                                int indexCurr = readyQueue.indexOf(currProcess);
+
+                                int rep = readyQueue.indexOf(calcMinFactor());
+                                readyQueue.set(indexCurr, calcMinFactor());
+
+                                readyQueue.remove(rep);
+                                readyQueue.add(currProcess);
+                                remQuantum--;
+                                currProcess.quantumTime = currProcess.quantumTime + remQuantum;
+                                currProcess.historyQt.add(currProcess.quantumTime);
+                                updated = false;
+                                break;
+                            }
+                        }
+                    }
+                    remQuantum--;
+                } else {
+                    currProcess.quantumTime = 0;
+                    currProcess.historyQt.add(currProcess.quantumTime);
+                    readyQueue.remove(currProcess);
+                    deadList.add(currProcess);
+                    setTurnAround(time, currProcess);
+                    updated = false;
+                    break;
+                }
+
             }
+
+            orderTime.add(time);
+            orderProcess.add(currProcess);
+            if (currProcess.updatedBurstTime > 0 && remQuantum == 0) {
+                readyQueue.remove(currProcess);
+                readyQueue.add(currProcess);
+                currProcess.quantumTime = currProcess.quantumTime + 2;
+                currProcess.historyQt.add(currProcess.quantumTime);
+                updated = false;
+            }
+
 
         }
 
