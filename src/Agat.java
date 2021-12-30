@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.lang.Math;
 public class Agat {
     private ArrayList<Process> processes;
@@ -9,7 +10,6 @@ public class Agat {
     private final ArrayList<String> waiting= new ArrayList<>();
     private float v2;
     private int time;
-
 
     public Agat(ArrayList<Process> processes)
     {
@@ -56,7 +56,7 @@ public class Agat {
                 v1=1;
             }
             else {
-                 v1= ((float)processes.get(processes.size() - 1).arrivalTime)/10;
+                v1= ((float)processes.get(processes.size() - 1).arrivalTime)/10;
             }
             processes.get(i).ceilV1= (int) Math.ceil(processes.get(i).arrivalTime/v1);
         }
@@ -156,7 +156,7 @@ public class Agat {
     public void getOrder()
     {
         System.out.println("Order of Processing: ");
-        System.out.println(orderProcess.get(0).name+" : Start time: "+ 0 +", End time: "+orderTime.get(0));
+        System.out.println(orderProcess.get(0).name+" : Start time: "+ orderProcess.get(0).arrivalTime +", End time: "+orderTime.get(0));
         for (int i = 1; i < orderProcess.size() ; i++) {
             System.out.println(orderProcess.get(i).name+" : Start time: "+ orderTime.get(i-1)+", End time: "+orderTime.get(i));
         }
@@ -198,21 +198,11 @@ public class Agat {
         average=(float)sum/processes.size();
         return average;
     }
-
-    public ArrayList<Integer> getOrderTime() {
-        return orderTime;
-    }
-
-    public ArrayList<Process> getOrderProcess() {
-        return orderProcess;
-    }
-
     public void showAgatOutput()
     {
         scheduleAgat();
-        System.out.println("================================");
+        System.out.println("======================");
         System.out.println("AGAT OUTPUT: ");
-        System.out.println("-------------");
         getOrder();
         getDeadList();
         printHistoryFactor();
@@ -222,15 +212,44 @@ public class Agat {
         getTurnAround();
         System.out.println("Average waiting time: "+getAverageWaiting());
         System.out.println("Average turn around time: "+AverageTurnAround());
-        System.out.println("================================");
+        System.out.println("======================");
+    }
+    public void sort(){
+        readyQueue.sort(new Comparator<Process>() {
+            @Override
+            public int compare(Process p1, Process p2)
+            {
+                if (p1.factor < p2.factor)
+                    return -1;
+                else  return 1;
+            }
+        });
     }
     public void scheduleAgat() {
         calculateV1();
         checkTime();
-            while (deadList.size() != processes.size()) {
-                if (readyQueue.size() != 0) {
+
+        Process currProcess = new Process();
+        boolean updated = false;
+
+        if(readyQueue.size() > 1){
+            calculateFactor();
+        }
+        for (Process p : readyQueue) {
+            if(readyQueue.size() > 1){
+                currProcess = calcMinFactor();
+                updated = true;
+            }
+        }
+        if(updated){
+            sort();
+        }
+        while (deadList.size() != processes.size()) {
+            if (readyQueue.size() != 0) {
                 int q;
-                Process currProcess = readyQueue.get(0);
+                if(!updated){
+                    currProcess = readyQueue.get(0);
+                }
 
                 if (!currProcess.historyQt.contains(currProcess.quantumTime))
                     currProcess.historyQt.add(currProcess.quantumTime);
@@ -240,7 +259,7 @@ public class Agat {
                 int remQuantum = currProcess.quantumTime;
                 int quantum = currProcess.quantumTime;
 
-                if (deadList.size() < processes.size() - 1) {
+                if (deadList.size() < processes.size() - 1 && !updated) {
                     calculateFactor();
                 } else quantum = currProcess.updatedBurstTime;
 
@@ -252,14 +271,18 @@ public class Agat {
                         if (i >= q) {
                             if (calcMinFactor() != null) {
                                 if (currProcess.factor > calcMinFactor().factor) {
+
                                     int indexCurr = readyQueue.indexOf(currProcess);
+
                                     int rep = readyQueue.indexOf(calcMinFactor());
                                     readyQueue.set(indexCurr, calcMinFactor());
+
                                     readyQueue.remove(rep);
                                     readyQueue.add(currProcess);
                                     remQuantum--;
                                     currProcess.quantumTime = currProcess.quantumTime + remQuantum;
                                     currProcess.historyQt.add(currProcess.quantumTime);
+                                    updated = false;
                                     break;
                                 }
                             }
@@ -271,6 +294,7 @@ public class Agat {
                         readyQueue.remove(currProcess);
                         deadList.add(currProcess);
                         setTurnAround(time, currProcess);
+                        updated = false;
                         break;
                     }
 
@@ -283,15 +307,17 @@ public class Agat {
                     readyQueue.add(currProcess);
                     currProcess.quantumTime = currProcess.quantumTime + 2;
                     currProcess.historyQt.add(currProcess.quantumTime);
+                    updated =false;
                 }
 
-                }
-                else {
-                    time++;
-                    checkTime();
-                }
+            }
+            else {
+                time++;
+                checkTime();
+            }
 
         }
 
     }
 }
+
