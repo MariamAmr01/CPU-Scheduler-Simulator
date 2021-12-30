@@ -51,41 +51,13 @@ public class Process {
         return endTime;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setColor(String color) {
-        this.color = color;
-    }
-
-    public void setArrivalTime(int arrivalTime) {
-        this.arrivalTime = arrivalTime;
-    }
-
-    public void setBurstTime(int burstTime) {
-        this.burstTime = burstTime;
-    }
-
-    public void setQuantumTime(int quantumTime) {
-        this.quantumTime = quantumTime;
-    }
-
-    public void setWaitingTime(int waitingTime) {this.waitingTime = waitingTime;}
-
     public void setturnAroundTime(int turnAroundTime) {this.turnAroundTime = turnAroundTime;}
 
-    public void setPriorityNumber(int priorityNumber) {
-        this.priorityNumber = priorityNumber;
-    }
 
     public String getName() {
         return name;
     }
 
-    public String getColor() {
-        return color;
-    }
 
     public int getArrivalTime() {
         return arrivalTime;
@@ -99,8 +71,6 @@ public class Process {
         return priorityNumber;
     }
 
-    public int getQuantumTime() {
-        return quantumTime; }
 
     public int getTurnAroundTime() { return turnAroundTime; }
 
