@@ -1,13 +1,14 @@
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.lang.Math;
+
 public class Agat {
     private ArrayList<Process> processes;
     private ArrayList<Process> readyQueue= new ArrayList<>();
     private ArrayList<Process> deadList= new ArrayList<>();;
     private final ArrayList<Process> orderProcess= new ArrayList<>();
     private final ArrayList<Integer> orderTime= new ArrayList<>();
-    private final ArrayList<String> waiting= new ArrayList<>();
+
     private float v2;
     private int time;
 
@@ -15,26 +16,6 @@ public class Agat {
     {
         this.processes=processes;
         time=0;
-    }
-
-    public void setProcesses(ArrayList<Process> processes) {
-        this.processes = processes;
-    }
-
-    public void setDeadList(ArrayList<Process> deadList) {
-        this.deadList = deadList;
-    }
-
-    public void setReadyQueue(ArrayList<Process> readyQueue) {
-        this.readyQueue = readyQueue;
-    }
-
-    public ArrayList<Process> getProcesses() {
-        return processes;
-    }
-
-    public ArrayList<Process> getReadyQueue() {
-        return readyQueue;
     }
 
     public void getDeadList() {

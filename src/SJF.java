@@ -1,7 +1,5 @@
 import java.util.ArrayList;
 
-
-
 public class SJF {
     public static ArrayList<Process> processes;
     public static ArrayList<Process> sortedprocess = new ArrayList<>();
